@@ -5,18 +5,7 @@ with open("config.json","r") as f:
     config = load(f)
 
 def main():
-
-    ship_monitor = monitor(
-        URI=f"mongodb://{config['username']}:{config['password']}@{config['host']}:{config['port']}/"
-    )
-
-    # Tests
-
-    
-
-
-
-
+    pass
 
 if __name__ == "__main__":
     pass
