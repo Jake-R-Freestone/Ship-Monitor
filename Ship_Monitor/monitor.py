@@ -30,7 +30,7 @@ class monitor:
 
     # Read most recent position of given MMSI
     def getMostRecentPosition(self,MMSI:str) -> dict: # Position document of the form {"MMSI": ..., "lat": ..., "long": ..., "IMO": ... }
-        pass
+        return self.dataDB.find_one({"MMSI":MMSI},{"sort":{"Timestamp":-1},"projection":{"_id":0,"MMSI":1,"lat":"$Position.cordinates[0]","long":"$Position.cordinates[1]","IMO":1}})
 
     # Read permanent or transient vessel information matching the given MMSI, and 0 or more additional criteria: IMO, Name, CallSign
     def getVesselData(self,MMSI:str) -> dict: # a Vessel document, with available and/or relevant properties.
@@ -42,7 +42,7 @@ class monitor:
 
     # Read all ports matching the given name and (optional) country
     def getPorts(self,portName:str,country:str=None) -> list: # Array of Port documents
-        pass
+        return self.portDB.find({""}) # Port doesnt have a name field
 
     # Read all ship positions in the tile of scale 3 containing the given port
     def getShipPositionByPort(self,portName:str,country:str) -> list: # If unique matching port: Array of Position documents (see above). Otherwise: an Array of Port documents.
@@ -50,7 +50,7 @@ class monitor:
 
     # Read last 5 positions of given MMSI
     def getLastFivePositions(self,MMSI:str) -> list: # Document of the form {MMSI: ..., Positions: [{"lat": ..., "long": ...}, ...], "IMO": ... }
-        pass
+        return self.dataDB.find({"MMSI":MMSI,"MsgType":"position_report"},{"project":{"_id":0,"MMSI":1,"Positions":[{"lat":"","long":"","IMO":""}]}})
 
     # Read most recents positions of ships headed to port with given Id
     def getShipPositionHeadedToPort(portID:str) -> list: # Document of the form {MMSI: ..., Positions: [{"lat": ..., "long": ...}, ...], "IMO": ... }
@@ -66,7 +66,8 @@ class monitor:
 
     # Given a tile Id, get the actual tile (a PNG file)
     def getTileImage(tileID:str) -> None: # Needs to return binary image 
-        pass
+        with open(f"./tiles/{tileID}.png","rb") as f:
+            return bytearray(f.read())
 
 if __name__ == "__main__":
     pass
