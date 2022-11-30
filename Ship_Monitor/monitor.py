@@ -10,17 +10,18 @@ class monitor:
         self.mapViewsDB = self.mongo['AISTestData']['mapviews']
         self.dataDB = self.mongo['AISTestData']['aisdk_20201118']
     
-    # Insert a batch of AIS messages (Static Data and/or Position Reports)
+    # Insert a batch of AIS messages (Static Data and/or Position Reports) 
+    # Jake (Done)
     def insertData(self,data:list) -> int: # Number of insertions
         return len(self.dataDB.insert_many(data).inserted_ids)
 
     # Insert an AIS message (Position Report or Static Data)
+    # Jake (Needs Testing)
     def insertAISMessage(self,data:dict) -> int: # 1/0 for Success/Failure
-        if self.dataDB.insert_one(data).acknowledged:
-            return 1
-        return 0
+        return int(self.dataDB.insert_one(data).acknowledged)
         
     # Delete all AIS messages whose timestamp is more than 5 minutes older than current time
+    # Jake (Needs Testing)
     def deleteOldMesssages(self,currentTime:datetime,timeStamp:datetime) -> int: # Number of deletions
         return len(self.dataDB.delete_many({"$gte":get(currentTime).shift(minutes=-5).datetime}).deleted_count)
 
@@ -30,7 +31,7 @@ class monitor:
 
     # Read most recent position of given MMSI
     def getMostRecentPosition(self,MMSI:str) -> dict: # Position document of the form {"MMSI": ..., "lat": ..., "long": ..., "IMO": ... }
-        return self.dataDB.find_one({"MMSI":MMSI},{"sort":{"Timestamp":-1},"projection":{"_id":0,"MMSI":1,"lat":"$Position.cordinates[0]","long":"$Position.cordinates[1]","IMO":1}})
+        pass
 
     # Read permanent or transient vessel information matching the given MMSI, and 0 or more additional criteria: IMO, Name, CallSign
     def getVesselData(self,MMSI:str) -> dict: # a Vessel document, with available and/or relevant properties.
@@ -42,7 +43,7 @@ class monitor:
 
     # Read all ports matching the given name and (optional) country
     def getPorts(self,portName:str,country:str=None) -> list: # Array of Port documents
-        return self.portDB.find({""}) # Port doesnt have a name field
+        pass
 
     # Read all ship positions in the tile of scale 3 containing the given port
     def getShipPositionByPort(self,portName:str,country:str) -> list: # If unique matching port: Array of Position documents (see above). Otherwise: an Array of Port documents.
@@ -50,7 +51,7 @@ class monitor:
 
     # Read last 5 positions of given MMSI
     def getLastFivePositions(self,MMSI:str) -> list: # Document of the form {MMSI: ..., Positions: [{"lat": ..., "long": ...}, ...], "IMO": ... }
-        return self.dataDB.find({"MMSI":MMSI,"MsgType":"position_report"},{"project":{"_id":0,"MMSI":1,"Positions":[{"lat":"","long":"","IMO":""}]}})
+        pass
 
     # Read most recents positions of ships headed to port with given Id
     def getShipPositionHeadedToPort(portID:str) -> list: # Document of the form {MMSI: ..., Positions: [{"lat": ..., "long": ...}, ...], "IMO": ... }
@@ -65,6 +66,7 @@ class monitor:
         pass
 
     # Given a tile Id, get the actual tile (a PNG file)
+    # Jake (Needs Testing)
     def getTileImage(tileID:str) -> None: # Needs to return binary image 
         with open(f"./tiles/{tileID}.png","rb") as f:
             return bytearray(f.read())
