@@ -1,4 +1,4 @@
-import pytest
+from pytest import fixture
 from Ship_Monitor.monitor import monitor
 from json import load
 from arrow import utcnow
@@ -13,7 +13,8 @@ ship_monitor = monitor(
         URI= config['mongo']
     )
 
-@pytest.fixture
+# Used to insert a document before a test is ran
+@fixture
 def insertMessage():
     ship_monitor.insertAISMessage({"Timestamp":utcnow().shift(minutes=-7).datetime})
 
