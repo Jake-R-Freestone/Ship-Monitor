@@ -1,3 +1,4 @@
+import pytest
 from Ship_Monitor.monitor import monitor
 from json import load
 from arrow import utcnow
@@ -11,6 +12,10 @@ with open('testData.json','r') as f:
 ship_monitor = monitor(
         URI= config['mongo']
     )
+
+@pytest.fixture
+def insertMessage():
+    ship_monitor.insertAISMessage({"Timestamp":utcnow().shift(minutes=-7).datetime})
 
 # ---------------------------------  Insert Data Tests  ---------------------------------
 class TestInserData:
@@ -26,15 +31,15 @@ class TestInserAISMessage:
         assert ship_monitor.insertAISMessage(testData['AIS Messages'][3]) == 1, "TEST FAILED"
 
     def test_insertAISMessage_2(self):
-        assert ship_monitor.insertAISMessage({"_id":"6384d77aaca926202b19ee30"}) == 0, "TEST FAILED"
+        assert ship_monitor.insertAISMessage(testData['AIS Messages'][3]) == 0, "TEST FAILED"
 
 # ---------------------------------  Delete Old Messages Tests  ---------------------------------
 class TestDeleteOldMessages:
     def test_deleteOldMesssages_1(self):
-        assert ship_monitor.deleteOldMesssages(utcnow().datetime) == 4,"TEST FAILED"
-
-    def test_deleteOldMesssages_2(self):
         assert ship_monitor.deleteOldMesssages(utcnow().datetime) == 0,"TEST FAILED"
+
+    def test_deleteOldMesssages_2(self,insertMessage):
+        assert ship_monitor.deleteOldMesssages(utcnow().datetime) == 1,"TEST FAILED"
 
 # ---------------------------------  Get Tile Image Tests  ---------------------------------
 class TestGetTileImage:

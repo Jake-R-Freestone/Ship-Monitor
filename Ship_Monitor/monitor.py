@@ -11,6 +11,12 @@ class monitor:
         self.mapViewsDB = self.DB['mapviews']
         self.dataDB = self.DB['data']
 
+        # cleaning the collections 
+        self.vesselDB.delete_many({})
+        self.portDB.delete_many({})
+        self.mapViewsDB.delete_many({})
+        self.dataDB.delete_many({})
+
     # Insert a batch of AIS messages (Static Data and/or Position Reports) 
     # Jake (Done)
     def insertData(self,data:list) -> int: # Number of insertions
