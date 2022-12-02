@@ -18,7 +18,11 @@ class monitor:
     # Insert an AIS message (Position Report or Static Data)
     # Jake (Needs Testing)
     def insertAISMessage(self,data:dict) -> int: # 1/0 for Success/Failure
-        return int(self.dataDB.insert_one(data).acknowledged)
+        try:
+            self.dataDB.insert_one(data)
+        except Exception:
+            return 0
+        return 1
         
     # Delete all AIS messages whose timestamp is more than 5 minutes older than current time
     # Jake (Needs Testing)
@@ -42,33 +46,38 @@ class monitor:
         pass
 
     # Read all ports matching the given name and (optional) country
+    # Derek (working)
     def getPorts(self,portName:str,country:str=None) -> list: # Array of Port documents
         pass
 
     # Read all ship positions in the tile of scale 3 containing the given port
+    # Derek (working)
     def getShipPositionByPort(self,portName:str,country:str) -> list: # If unique matching port: Array of Position documents (see above). Otherwise: an Array of Port documents.
         pass
 
     # Read last 5 positions of given MMSI
+    # Derek (working)
     def getLastFivePositions(self,MMSI:str) -> list: # Document of the form {MMSI: ..., Positions: [{"lat": ..., "long": ...}, ...], "IMO": ... }
         pass
 
     # Read most recents positions of ships headed to port with given Id
-    def getShipPositionHeadedToPort(portID:str) -> list: # Document of the form {MMSI: ..., Positions: [{"lat": ..., "long": ...}, ...], "IMO": ... }
+    # Derek (working)
+    def getShipPositionHeadedToPort(self,portID:str) -> list: # Document of the form {MMSI: ..., Positions: [{"lat": ..., "long": ...}, ...], "IMO": ... }
         pass
 
     # Read most recent positions of ships headed to given port (as read from static data, or user input)
-    def getShipPostionHeadedToPorts(portnamee:str,country:str) -> dict: # If unique matching port: array of of Position documents of the form {"MMSI": ..., "lat": ..., "long": ..., "IMO": ...}10 Otherwise: an Array of Port documents.
+    # Derek (working)
+    def getShipPostionHeadedToPorts(self,portnamee:str,country:str) -> dict: # If unique matching port: array of of Position documents of the form {"MMSI": ..., "lat": ..., "long": ..., "IMO": ...}10 Otherwise: an Array of Port documents.
         pass
 
     # Given a background map tile for zoom level 1 (2), find the 4 tiles of zoom level 2 (3) that are contained in it
-    def getBackgroundTilefromZoon1to2(tileId:str) -> list: # list<map tile description documents>
+    def getBackgroundTilefromZoon1to2(self,tileId:str) -> list: # list<map tile description documents>
         pass
 
     # Given a tile Id, get the actual tile (a PNG file)
     # Jake (Needs Testing)
-    def getTileImage(tileID:str) -> None: # Needs to return binary image 
-        with open(f"./tiles/{tileID}.png","rb") as f:
+    def getTileImage(self,tileID:str) -> bytearray:
+        with open(f".\\Ship_Monitor\\tiles\\{tileID}.png","rb") as f:
             return bytearray(f.read())
 
 if __name__ == "__main__":

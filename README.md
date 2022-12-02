@@ -7,3 +7,4 @@ required python packages:
 arrow
 datetime
 pymongo
+pytest
