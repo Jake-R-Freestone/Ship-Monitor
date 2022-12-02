@@ -5,18 +5,19 @@ from arrow import get
 class monitor:
     def __init__(self,URI):
         self.mongo = MongoClient(URI)
-        self.vesselDB = self.mongo['AISTestData']['vessels']
-        self.portDB = self.mongo['AISTestData']['ports']
-        self.mapViewsDB = self.mongo['AISTestData']['mapviews']
-        self.dataDB = self.mongo['AISTestData']['aisdk_20201118']
-    
+        self.DB = self.mongo['Ship_Monitor']
+        self.vesselDB = self.DB['vessels']
+        self.portDB = self.DB['ports']
+        self.mapViewsDB = self.DB['mapviews']
+        self.dataDB = self.DB['data']
+
     # Insert a batch of AIS messages (Static Data and/or Position Reports) 
     # Jake (Done)
     def insertData(self,data:list) -> int: # Number of insertions
         return len(self.dataDB.insert_many(data).inserted_ids)
 
     # Insert an AIS message (Position Report or Static Data)
-    # Jake (Needs Testing)
+    # Jake (Done)
     def insertAISMessage(self,data:dict) -> int: # 1/0 for Success/Failure
         try:
             self.dataDB.insert_one(data)
@@ -26,8 +27,8 @@ class monitor:
         
     # Delete all AIS messages whose timestamp is more than 5 minutes older than current time
     # Jake (Needs Testing)
-    def deleteOldMesssages(self,currentTime:datetime,timeStamp:datetime) -> int: # Number of deletions
-        return len(self.dataDB.delete_many({"$gte":get(currentTime).shift(minutes=-5).datetime}).deleted_count)
+    def deleteOldMesssages(self,currentTime:datetime) -> int: # Number of deletions
+        return self.dataDB.delete_many({"Timestamp":{"$lt":get(currentTime).shift(minutes=-5).datetime}}).deleted_count
 
     # Read all most recent ship positions
     def getRecentShipPositions(self) -> list: # Array of ship documents
@@ -75,7 +76,7 @@ class monitor:
         pass
 
     # Given a tile Id, get the actual tile (a PNG file)
-    # Jake (Needs Testing)
+    # Jake (Done)
     def getTileImage(self,tileID:str) -> bytearray:
         with open(f".\\Ship_Monitor\\tiles\\{tileID}.png","rb") as f:
             return bytearray(f.read())
