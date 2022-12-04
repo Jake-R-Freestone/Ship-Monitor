@@ -49,3 +49,11 @@ class TestGetTileImage:
 
     def test_getTileImage_2(self):
         assert ship_monitor.getTileImage("38F93") == bytearray(open(".\\Ship_Monitor\\tiles\\38F93.png","rb").read()), "TEST FAILED"
+
+# ---------------------------------  Get Ports  ---------------------------------
+class getPorts:
+    def test_getPorts_1(self):
+        assert ship_monitor.getPorts("Denmark") == '', "TEST FAILED"
+    
+    def test_getPorts_2(self):
+        assert ship_monitor.getPorts("Brazil") == '', "TEST FAILED"

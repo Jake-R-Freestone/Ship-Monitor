@@ -55,7 +55,8 @@ class monitor:
     # Read all ports matching the given name and (optional) country
     # Derek (working)
     def getPorts(self,portName:str,country:str=None) -> list: # Array of Port documents
-        pass
+        portName = self.DB.collection.find(country)
+        return self.portDB.collection.find(portName)
 
     # Read all ship positions in the tile of scale 3 containing the given port
     # Derek (working)
