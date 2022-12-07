@@ -1,6 +1,7 @@
 from pymongo import MongoClient
 from datetime import datetime
 from arrow import get
+import json
 
 class monitor:
     def __init__(self,URI):
@@ -10,6 +11,7 @@ class monitor:
         self.portDB = self.DB['ports']
         self.mapViewsDB = self.DB['mapviews']
         self.dataDB = self.DB['data']
+        self.stub_mode = False
 
         # cleaning the collections 
         self.vesselDB.delete_many({})
@@ -55,8 +57,9 @@ class monitor:
     # Read all ports matching the given name and (optional) country
     # Derek (working)
     def getPorts(self,portName:str,country:str=None) -> list: # Array of Port documents
-        portName = self.DB.collection.find(country)
-        return self.portDB.collection.find(portName)
+        if self.stub_mode:
+            return []
+        return [self.portDB.find({"port_location": portName})]
 
     # Read all ship positions in the tile of scale 3 containing the given port
     # Derek (working)

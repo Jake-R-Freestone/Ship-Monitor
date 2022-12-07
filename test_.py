@@ -2,6 +2,7 @@ from pytest import fixture
 from Ship_Monitor.monitor import monitor
 from json import load
 from arrow import utcnow
+import json
 
 with open('config.json','r') as f:
     config = load(f)
@@ -51,9 +52,12 @@ class TestGetTileImage:
         assert ship_monitor.getTileImage("38F93") == bytearray(open(".\\Ship_Monitor\\tiles\\38F93.png","rb").read()), "TEST FAILED"
 
 # ---------------------------------  Get Ports  ---------------------------------
-class getPorts:
+class TestGetPorts:
     def test_getPorts_1(self):
-        assert ship_monitor.getPorts("Denmark") == '', "TEST FAILED"
+        ship_monitor = monitor(URI= config['mongo'])
+        ship_monitor.stub_mode = True
+        assert ship_monitor.getPorts("Copenhagen") == [], "TEST FAILED"
     
     def test_getPorts_2(self):
-        assert ship_monitor.getPorts("Brazil") == '', "TEST FAILED"
+        ship_monitor = monitor(URI= config['mongo'])
+        assert len(ship_monitor.getPorts("Denmark")) == 1, "TEST FAILED"
