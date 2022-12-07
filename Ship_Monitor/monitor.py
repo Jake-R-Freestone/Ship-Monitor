@@ -63,8 +63,10 @@ class monitor:
 
     # Read all ship positions in the tile of scale 3 containing the given port
     # Derek (working)
-    def getShipPositionByPort(self,portName:str,country:str) -> list: # If unique matching port: Array of Position documents (see above). Otherwise: an Array of Port documents.
-        pass
+    def getShipPositionByPort(self,portName:str,country:str=None) -> list: # If unique matching port: Array of Position documents (see above). Otherwise: an Array of Port documents.
+        if self.stub_mode:
+            return []
+        return [self.portDB.find({"Position": portName})]
 
     # Read last 5 positions of given MMSI
     # Derek (working)

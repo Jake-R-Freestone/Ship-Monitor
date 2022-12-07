@@ -60,4 +60,16 @@ class TestGetPorts:
     
     def test_getPorts_2(self):
         ship_monitor = monitor(URI= config['mongo'])
-        assert len(ship_monitor.getPorts("Denmark")) == 1, "TEST FAILED"
+        assert len(ship_monitor.getPorts("Denmark")) > 0, "TEST FAILED"
+
+# ---------------------------------  Get Ship Position By Port  ---------------------------------
+
+class TestGetShipPositionByPort:
+    def test_getShipPositionByPort_1(self):
+        ship_monitor = monitor(URI= config['mongo'])
+        ship_monitor.stub_mode = True
+        assert ship_monitor.getShipPositionByPort("Copenhagen") == [], "TEST FAILED"
+
+    def test_getShipPositionByPort_2(self):
+        ship_monitor = monitor(URI= config['mongo'])
+        assert len(ship_monitor.getShipPositionByPort("Denmark")) > 0, "TEST FAILED"
