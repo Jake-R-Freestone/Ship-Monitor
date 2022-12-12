@@ -19,21 +19,6 @@ ship_monitor = monitor(
 def insertMessage():
     ship_monitor.insertAISMessage({"Timestamp":utcnow().shift(minutes=-7).datetime})
 
-@fixture
-def insertPort():
-    ship_monitor.insertPortData({
-  "id": "1221",
-  "un/locode": "DKFDH",
-  "port_location": "Frederikshavn",
-  "country": "Denmark",
-  "longitude": "10.546111",
-  "latitude": "57.437778",
-  "website": "www.frederikshavnhavn.dk",
-  "mapview_1": 1,
-  "mapview_2": 5335,
-  "mapview_3": 53352
-})
-
 # ---------------------------------  Insert Data Tests  ---------------------------------
 class TestInserData:
     def test_InsertData_1(self):
@@ -73,9 +58,8 @@ class TestGetPorts:
         ship_monitor.stub_mode = True
         assert ship_monitor.getPorts("Copenhagen") == [], "TEST FAILED"
     
-    def test_getPorts_2(self,insertPort):
+    def test_getPorts_2(self):
         ship_monitor = monitor(URI= config['mongo'])
-        print(insertPort)
         assert len(ship_monitor.getPorts("Denmark")) > 0, "TEST FAILED"
 
 # ---------------------------------  Get Ship Position By Port  ---------------------------------
@@ -89,3 +73,28 @@ class TestGetShipPositionByPort:
     def test_getShipPositionByPort_2(self):
         ship_monitor = monitor(URI= config['mongo'])
         assert len(ship_monitor.getShipPositionByPort("Denmark")) > 0, "TEST FAILED"
+
+# ---------------------------------  Get Recent Ship Positions ---------------------------------
+class TestGetRecentShipPosition:
+    def test_getRecentShipPositions(self):
+        ship_monitor = monitor(URI= config['mongo'])
+        ship_monitor.stub_mode = True
+        assert ship_monitor.getRecentShipPositions() == [], "TEST FAILED"
+    
+    def test_getRecentShipPositions(self):
+        ship_monitor = monitor(URI = config['mongo'])
+        ship_monitor.stub_mode = True
+        assert ship_monitor.getRecentShipPositions() == [], "TEST FAILED"
+
+# ---------------------------------  Get Most Recent Positions ---------------------------------
+
+class getMostRecentPosition:
+    def test_getMostRecentPosition(self):
+        ship_monitor = monitor(URI = config['mongo'])
+        ship_monitor.stub_mode = True
+        assert ship_monitor.getMostRecentPosition() == [], "TEST FAILED"
+    
+    def test_getMostRecentPosition(self):
+        ship_monitor = monitor(URI = config['mongo'])
+        ship_monitor.stub_mode = True
+        assert ship_monitor.getMostRecentPosition() == [], "TEST FAILED"
