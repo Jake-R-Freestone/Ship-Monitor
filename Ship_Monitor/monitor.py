@@ -84,21 +84,25 @@ class monitor:
         return list(self.portDB.find({"port_location":portName}))
 
     # Read all ship positions in the tile of scale 3 containing the given port
-    # Derek (working)
+    # Derek (Done)
     def getShipPositionByPort(self,portName:str,country:str=None) -> list: # If unique matching port: Array of Position documents (see above). Otherwise: an Array of Port documents.
-        return 1
+        if country:
+            return list(self.portDB.find({"longitude":portName,"country":country}))
+        return list(self.portDB.find({"port_location":portName}))
 
     # Read last 5 positions of given MMSI
-    # Derek (working)
-    def getLastFivePositions(self,MMSI:str) -> list: # Document of the form {MMSI: ..., Positions: [{"lat": ..., "long": ...}, ...], "IMO": ... }
+    # Derek (Done)
+    def getLastFivePositions(self,MMSI:str,position:str=None) -> list: # Document of the form {MMSI: ..., Positions: [{"lat": ..., "long": ...}, ...], "IMO": ... }
         if MMSI:
-            return list(self.vesselDB.find({"MMSI": MMSI}))
-        return list(self.vesselDB.find({"MMSI": MMSI}))
+            return list(self.vesselDB.find({"IMO":position,"MMSI":MMSI}))
+        return list(self.vesselDB.find({"MMSI":MMSI}))
 
     # Read most recents positions of ships headed to port with given Id
-    # Derek (working)
-    def getShipPositionHeadedToPort(self,portID:str) -> list: # Document of the form {MMSI: ..., Positions: [{"lat": ..., "long": ...}, ...], "IMO": ... }
-        return 1
+    # Derek (Done)
+    def getShipPositionHeadedToPort(self,position:str,portID:str=None) -> list: # Document of the form {MMSI: ..., Positions: [{"lat": ..., "long": ...}, ...], "IMO": ... }
+        if portID:
+            return list(self.portDB.find({"port_location":position,"id":portID}))
+        return list(self.portDB.find({"id": portID}))
 
     # Read most recent positions of ships headed to given port (as read from static data, or user input)
     # Derek (Done)

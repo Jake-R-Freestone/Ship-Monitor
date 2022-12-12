@@ -21,6 +21,7 @@ def insertMessage():
 @fixture
 def insertPort():
     ship_monitor.insertPortData({"port_location": "Denmark"})
+    ship_monitor.insertPortData({"id": "1221"})
 
 @fixture
 def insertVessel():
@@ -70,10 +71,10 @@ class TestGetPorts:
 
 class TestGetShipPositionByPort:
     def test_getShipPositionByPort_1(self):
-        assert ship_monitor.getShipPositionByPort("Copenhagen") == 1, "TEST FAILED"
+        assert len(ship_monitor.getShipPositionByPort("Copenhagen")) == 0, "TEST FAILED"
 
-    def test_getShipPositionByPort_2(self):
-        assert ship_monitor.getShipPositionByPort("Denmark") == 1, "TEST FAILED"
+    def test_getShipPositionByPort_2(self,insertPort):
+        assert len(ship_monitor.getShipPositionByPort("Denmark")) == 2, "TEST FAILED"
 
 # ---------------------------------  GetLastFivePositions  ---------------------------------
 
@@ -81,17 +82,17 @@ class TestGetLastFivePositions:
     def test_getLastFivePositions_1(self):
         assert len(ship_monitor.getLastFivePositions("235024642")) == 0, "TEST FAILED"
 
-    def test_getLastFivePositions_2(self,insertVessel):
+    def test_getLastFivePositions_2(self,insertVessel,insertPort):
         assert len(ship_monitor.getLastFivePositions("235095435")) == 1, "TEST FAILED"
 
 # ---------------------------------  GetShipPositionHeadToPort  ---------------------------------
 
 class TestGetShipPositionHeadToPort:
     def test_getShipPositionHeadToPort_1(self):
-        assert ship_monitor.getShipPositionHeadedToPort("Copenhagen") == 1, "TEST FAILED"
+        assert len(ship_monitor.getShipPositionHeadedToPort("1222")) == 3, "TEST FAILED"
 
-    def test_getShipPositionHeadToPort_2(self):
-        assert ship_monitor.getShipPositionHeadedToPort("Denmark") == 1, "TEST FAILED"
+    def test_getShipPositionHeadToPort_2(self,insertPort):
+        assert len(ship_monitor.getShipPositionHeadedToPort("1221")) == 4, "TEST FAILED"
 
 # ---------------------------------  GetShipPositionHeadToPorts  ---------------------------------
 
@@ -100,7 +101,7 @@ class TestGetShipPositionHeadToPorts:
         assert len(ship_monitor.getShipPostionHeadedToPorts("Copenhagen")) == 0, "TEST FAILED"
 
     def test_getShipPositionHeadToPorts_2(self,insertPort):
-        assert len(ship_monitor.getShipPostionHeadedToPorts("Denmark")) == 2, "TEST FAILED"
+        assert len(ship_monitor.getShipPostionHeadedToPorts("Denmark")) == 5, "TEST FAILED"
 
 # ---------------------------------  Get Recent Ship Positions ---------------------------------
 class TestGetRecentShipPosition:
