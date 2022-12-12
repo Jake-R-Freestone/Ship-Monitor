@@ -32,6 +32,13 @@ class monitor:
         except Exception:
             return 0
         return 1
+    
+    def insertPortData(self,data:dict) -> int:
+        try:
+            self.portDB.insert_one(data)
+        except Exception:
+            return 0
+        return 1
         
     # Delete all AIS messages whose timestamp is more than 5 minutes older than current time
     # Jake (Needs Testing)
@@ -59,7 +66,7 @@ class monitor:
     def getPorts(self,portName:str,country:str=None) -> list: # Array of Port documents
         if self.stub_mode:
             return []
-        return [self.portDB.find({"port_location": portName})]
+        return self.dataDB.insert_one({"country":{"$lt":get(country)}})
 
     # Read all ship positions in the tile of scale 3 containing the given port
     # Derek (working)
