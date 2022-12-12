@@ -37,6 +37,13 @@ class monitor:
         except Exception:
             return 0
         return 1
+    
+    def insertVessel(self,data:dict) -> int:
+        try:
+            self.vesselDB.insert_one(data)
+        except Exception:
+            return 0
+        return 1
         
     # Delete all AIS messages whose timestamp is more than 5 minutes older than current time
     # Jake (Needs Testing)
@@ -70,7 +77,7 @@ class monitor:
         pass
 
     # Read all ports matching the given name and (optional) country
-    # Derek (working)
+    # Derek (Done)
     def getPorts(self,portName:str,country:str=None) -> list: # Array of Port documents
         if country:
             return list(self.portDB.find({"port_location":portName,"country":country}))
@@ -84,7 +91,9 @@ class monitor:
     # Read last 5 positions of given MMSI
     # Derek (working)
     def getLastFivePositions(self,MMSI:str) -> list: # Document of the form {MMSI: ..., Positions: [{"lat": ..., "long": ...}, ...], "IMO": ... }
-        return 1
+        if MMSI:
+            return list(self.vesselDB.find({"MMSI": MMSI}))
+        return list(self.vesselDB.find({"MMSI": MMSI}))
 
     # Read most recents positions of ships headed to port with given Id
     # Derek (working)
@@ -92,9 +101,11 @@ class monitor:
         return 1
 
     # Read most recent positions of ships headed to given port (as read from static data, or user input)
-    # Derek (working)
-    def getShipPostionHeadedToPorts(self,portnamee:str,country:str) -> dict: # If unique matching port: array of of Position documents of the form {"MMSI": ..., "lat": ..., "long": ..., "IMO": ...}10 Otherwise: an Array of Port documents.
-        return 1
+    # Derek (Done)
+    def getShipPostionHeadedToPorts(self,portName:str,country:str=None) -> dict: # If unique matching port: array of of Position documents of the form {"MMSI": ..., "lat": ..., "long": ..., "IMO": ...}10 Otherwise: an Array of Port documents.
+        if country:
+            return list(self.portDB.find({"longitude":portName,"country":country}))
+        return list(self.portDB.find({"port_location":portName}))
 
     # Given a background map tile for zoom level 1 (2), find the 4 tiles of zoom level 2 (3) that are contained in it
     def getBackgroundTilefromZoon1to2(self,tileId:str) -> list: # list<map tile description documents>
