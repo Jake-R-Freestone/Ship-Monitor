@@ -2,7 +2,6 @@ from pytest import fixture
 from Ship_Monitor.monitor import monitor
 from json import load
 from arrow import utcnow
-import json
 
 with open('config.json','r') as f:
     config = load(f)
@@ -21,18 +20,7 @@ def insertMessage():
 
 @fixture
 def insertPort():
-    ship_monitor.insertPortData({
-  "id": "1221",
-  "un/locode": "DKFDH",
-  "port_location": "Frederikshavn",
-  "country": "Denmark",
-  "longitude": "10.546111",
-  "latitude": "57.437778",
-  "website": "www.frederikshavnhavn.dk",
-  "mapview_1": 1,
-  "mapview_2": 5335,
-  "mapview_3": 53352
-})
+    ship_monitor.insertPortData({"port_location": "Denmark"})
 
 # ---------------------------------  Insert Data Tests  ---------------------------------
 class TestInserData:
@@ -69,23 +57,16 @@ class TestGetTileImage:
 # ---------------------------------  Get Ports  ---------------------------------
 class TestGetPorts:
     def test_getPorts_1(self):
-        ship_monitor = monitor(URI= config['mongo'])
-        ship_monitor.stub_mode = True
-        assert ship_monitor.getPorts("Copenhagen") == [], "TEST FAILED"
+        assert len(ship_monitor.getPorts("Copenhagen")) == 0, "TEST FAILED"
     
     def test_getPorts_2(self,insertPort):
-        ship_monitor = monitor(URI= config['mongo'])
-        print(insertPort)
-        assert len(ship_monitor.getPorts("Denmark")) > 0, "TEST FAILED"
+        assert len(ship_monitor.getPorts("Denmark")) == 1, "TEST FAILED"
 
 # ---------------------------------  Get Ship Position By Port  ---------------------------------
 
-class TestGetShipPositionByPort:
+class GetShipPositionByPort:
     def test_getShipPositionByPort_1(self):
-        ship_monitor = monitor(URI= config['mongo'])
-        ship_monitor.stub_mode = True
         assert ship_monitor.getShipPositionByPort("Copenhagen") == [], "TEST FAILED"
 
     def test_getShipPositionByPort_2(self):
-        ship_monitor = monitor(URI= config['mongo'])
         assert len(ship_monitor.getShipPositionByPort("Denmark")) > 0, "TEST FAILED"
