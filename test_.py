@@ -64,12 +64,39 @@ class TestGetPorts:
 
 # ---------------------------------  Get Ship Position By Port  ---------------------------------
 
-class GetShipPositionByPort:
+class TestGetShipPositionByPort:
     def test_getShipPositionByPort_1(self):
-        assert ship_monitor.getShipPositionByPort("Copenhagen") == [], "TEST FAILED"
+        assert ship_monitor.getShipPositionByPort("Copenhagen") == 1, "TEST FAILED"
 
     def test_getShipPositionByPort_2(self):
-        assert len(ship_monitor.getShipPositionByPort("Denmark")) > 0, "TEST FAILED"
+        assert ship_monitor.getShipPositionByPort("Denmark") == 1, "TEST FAILED"
+
+# ---------------------------------  GetLastFivePositions  ---------------------------------
+
+class TestGetLastFivePositions:
+    def test_getLastFivePositions_1(self):
+        assert ship_monitor.getLastFivePositions("Copenhagen") == 1, "TEST FAILED"
+
+    def test_getLastFivePositions_2(self):
+        assert ship_monitor.getLastFivePositions("Denmark") == 1, "TEST FAILED"
+
+# ---------------------------------  GetShipPositionHeadToPort  ---------------------------------
+
+class TestGetShipPositionHeadToPort:
+    def test_getShipPositionHeadToPort_1(self):
+        assert ship_monitor.getShipPositionHeadedToPort("Copenhagen") == 1, "TEST FAILED"
+
+    def test_getShipPositionHeadToPort_2(self):
+        assert ship_monitor.getShipPositionHeadedToPort("Denmark") == 1, "TEST FAILED"
+
+# ---------------------------------  GetShipPositionHeadToPorts  ---------------------------------
+
+class GetShipPositionHeadToPorts:
+    def test_getShipPositionHeadToPorts_1(self):
+        assert ship_monitor.getShipPostionHeadedToPorts("Copenhagen") == 1, "TEST FAILED"
+
+    def test_getShipPositionHeadToPorts_2(self):
+        assert len(ship_monitor.getShipPostionHeadedToPorts("Denmark")) > 1, "TEST FAILED"
 
 # ---------------------------------  Get Recent Ship Positions ---------------------------------
 class TestGetRecentShipPosition:

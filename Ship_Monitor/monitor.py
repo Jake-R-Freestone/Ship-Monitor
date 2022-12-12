@@ -79,22 +79,22 @@ class monitor:
     # Read all ship positions in the tile of scale 3 containing the given port
     # Derek (working)
     def getShipPositionByPort(self,portName:str,country:str=None) -> list: # If unique matching port: Array of Position documents (see above). Otherwise: an Array of Port documents.
-        return [self.portDB.find({"Position": portName})]
+        return 1
 
     # Read last 5 positions of given MMSI
     # Derek (working)
     def getLastFivePositions(self,MMSI:str) -> list: # Document of the form {MMSI: ..., Positions: [{"lat": ..., "long": ...}, ...], "IMO": ... }
-        pass
+        return 1
 
     # Read most recents positions of ships headed to port with given Id
     # Derek (working)
     def getShipPositionHeadedToPort(self,portID:str) -> list: # Document of the form {MMSI: ..., Positions: [{"lat": ..., "long": ...}, ...], "IMO": ... }
-        pass
+        return 1
 
     # Read most recent positions of ships headed to given port (as read from static data, or user input)
     # Derek (working)
     def getShipPostionHeadedToPorts(self,portnamee:str,country:str) -> dict: # If unique matching port: array of of Position documents of the form {"MMSI": ..., "lat": ..., "long": ..., "IMO": ...}10 Otherwise: an Array of Port documents.
-        pass
+        return 1
 
     # Given a background map tile for zoom level 1 (2), find the 4 tiles of zoom level 2 (3) that are contained in it
     def getBackgroundTilefromZoon1to2(self,tileId:str) -> list: # list<map tile description documents>
