@@ -44,18 +44,28 @@ class monitor:
         return self.dataDB.delete_many({"Timestamp":{"$lt":get(currentTime).shift(minutes=-5).datetime}}).deleted_count
 
     # Read all most recent ship positions
+    #Dawson (working)
     def getRecentShipPositions(self) -> list: # Array of ship documents
-        pass
+        if self.stub_mode:
+            return []
+        return [self.portDB.find().sort({"Position":-1})]
 
     # Read most recent position of given MMSI
+    #Dawson (working)
     def getMostRecentPosition(self,MMSI:str) -> dict: # Position document of the form {"MMSI": ..., "lat": ..., "long": ..., "IMO": ... }
-        pass
+        if self.stub_mode:
+            return []
+        return dict(self.dataDB.find_one({"MMSI":{}}))
 
     # Read permanent or transient vessel information matching the given MMSI, and 0 or more additional criteria: IMO, Name, CallSign
+    # Dawson (working)
     def getVesselData(self,MMSI:str) -> dict: # a Vessel document, with available and/or relevant properties.
-        pass
+        if self.stub_mode:
+            return []
+        return 
 
     # Read all most recent ship positions in the given tile
+    # Dawson (working)
     def shipPositionByTile(self,tileID:str) -> list: # Array of ship documents
         pass
 

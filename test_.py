@@ -70,3 +70,28 @@ class GetShipPositionByPort:
 
     def test_getShipPositionByPort_2(self):
         assert len(ship_monitor.getShipPositionByPort("Denmark")) > 0, "TEST FAILED"
+
+# ---------------------------------  Get Recent Ship Positions ---------------------------------
+class TestGetRecentShipPosition:
+    def test_getRecentShipPositions(self):
+        ship_monitor = monitor(URI= config['mongo'])
+        ship_monitor.stub_mode = True
+        assert ship_monitor.getRecentShipPositions() == [], "TEST FAILED"
+    
+    def test_getRecentShipPositions(self):
+        ship_monitor = monitor(URI = config['mongo'])
+        ship_monitor.stub_mode = True
+        assert ship_monitor.getRecentShipPositions() == [], "TEST FAILED"
+
+# ---------------------------------  Get Most Recent Positions ---------------------------------
+
+class getMostRecentPosition:
+    def test_getMostRecentPosition(self):
+        ship_monitor = monitor(URI = config['mongo'])
+        ship_monitor.stub_mode = True
+        assert ship_monitor.getMostRecentPosition() == [], "TEST FAILED"
+    
+    def test_getMostRecentPosition(self):
+        ship_monitor = monitor(URI = config['mongo'])
+        ship_monitor.stub_mode = True
+        assert ship_monitor.getMostRecentPosition() == [], "TEST FAILED"
