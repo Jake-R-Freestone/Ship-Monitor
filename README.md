@@ -7,8 +7,9 @@
 - Pytest ( Used for testing )
 
 ## Test
-1. Open project in terminal 
-2. Run "pytest"
+1. Install Dependencies 
+2. Open project in terminal 
+3. Run "pytest"
 
 ## Team Members 
 - Dawson Davis

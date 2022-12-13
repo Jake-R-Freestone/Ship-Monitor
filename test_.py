@@ -106,24 +106,16 @@ class TestGetShipPositionHeadToPorts:
 # ---------------------------------  Get Recent Ship Positions ---------------------------------
 class TestGetRecentShipPosition:
     def test_getRecentShipPositions(self):
-        ship_monitor = monitor(URI= config['mongo'])
-        ship_monitor.stub_mode = True
         assert ship_monitor.getRecentShipPositions() == [], "TEST FAILED"
     
     def test_getRecentShipPositions(self):
-        ship_monitor = monitor(URI = config['mongo'])
-        ship_monitor.stub_mode = True
         assert ship_monitor.getRecentShipPositions() == [], "TEST FAILED"
 
 # ---------------------------------  Get Most Recent Positions ---------------------------------
 
-class getMostRecentPosition:
+class TestgetMostRecentPosition:
     def test_getMostRecentPosition(self):
-        ship_monitor = monitor(URI = config['mongo'])
-        ship_monitor.stub_mode = True
         assert ship_monitor.getMostRecentPosition() == [], "TEST FAILED"
     
     def test_getMostRecentPosition(self):
-        ship_monitor = monitor(URI = config['mongo'])
-        ship_monitor.stub_mode = True
         assert ship_monitor.getMostRecentPosition() == [], "TEST FAILED"

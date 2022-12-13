@@ -13,7 +13,7 @@ ship_monitor = monitor(
 
 def main():
     pass
-    # Use package here
+    # You can mess around with the package here
 
 if __name__ == "__main__":
     main()
