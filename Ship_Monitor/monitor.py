@@ -49,21 +49,21 @@ class monitor:
 
     # Read all most recent ship positions
     def getRecentShipPositions(self) -> list: # Array of ship documents
-        if self.stub_mode:
-            return []
-        return [self.portDB.find().sort({"Position":-1})]
+        pass 
+        #return list(self.vesselDB.find({"MMSI"}))
+        #return list(self.portDB.find().sort({"Latitude", "Longitude"}))
 
-    # Read most recent position of given MMSI
-    def getMostRecentPosition(self,MMSI:str) -> dict: # Position document of the form {"MMSI": ..., "lat": ..., "long": ..., "IMO": ... }
-        if self.stub_mode:
-            return []
-        return dict(self.dataDB.find_one({"MMSI":{}}))
-
+    #Read most recent position of given MMSI
+    def getMostRecentPosition(self, MMSI:str, IMO:str=None) -> dict: # Position document of the form {"MMSI": ..., "lat": ..., "long": ..., "IMO": ... }
+        if MMSI:
+            return dict(self.vesselDB.find({"IMO": IMO, "MMSI":MMSI}))
+        return dict(self.vesselDB.find({"MMSI": MMSI, "IMO": IMO})) #was going to check IMO in testing
+    
     # Read permanent or transient vessel information matching the given MMSI, and 0 or more additional criteria: IMO, Name, CallSign
     def getVesselData(self,MMSI:str) -> dict: # a Vessel document, with available and/or relevant properties.
-        if self.stub_mode:
-            return []
-        return 
+        if MMSI:
+            return dict(self.vesselDB)
+        pass
 
     # Read all most recent ship positions in the given tile
     def shipPositionByTile(self,tileID:str) -> list: # Array of ship documents

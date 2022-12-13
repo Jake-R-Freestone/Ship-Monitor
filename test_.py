@@ -26,7 +26,9 @@ def insertPort():
 @fixture
 def insertVessel():
     ship_monitor.insertVessel({"MMSI": "235095435"})
-
+    ship_monitor.insertVessel({"MMSI": "228719000"})
+    ship_monitor.insertVessel({"IMO": "9998999"})
+    
 # ---------------------------------  Insert Data Tests  ---------------------------------
 class TestInserData:
     def test_InsertData_1(self):
@@ -103,19 +105,8 @@ class TestGetShipPositionHeadToPorts:
     def test_getShipPositionHeadToPorts_2(self,insertPort):
         assert len(ship_monitor.getShipPostionHeadedToPorts("Denmark")) == 5, "TEST FAILED"
 
-# ---------------------------------  Get Recent Ship Positions ---------------------------------
-class TestGetRecentShipPosition:
-    def test_getRecentShipPositions(self):
-        assert ship_monitor.getRecentShipPositions() == [], "TEST FAILED"
-    
-    def test_getRecentShipPositions(self):
-        assert ship_monitor.getRecentShipPositions() == [], "TEST FAILED"
-
 # ---------------------------------  Get Most Recent Positions ---------------------------------
 
 class TestgetMostRecentPosition:
-    def test_getMostRecentPosition(self):
-        assert ship_monitor.getMostRecentPosition() == [], "TEST FAILED"
-    
-    def test_getMostRecentPosition(self):
-        assert ship_monitor.getMostRecentPosition() == [], "TEST FAILED"
+    def test_getMostRecentPosition(self, insertVessel):
+        assert len(ship_monitor.getMostRecentPosition("228719000")) == 1, "TEST FAILED"
